@@ -10,7 +10,7 @@ on:
         description: "Choose the ID of your collection"
         type: string
   schedule:
-      - cron: "8 23 * * *"
+      - cron: "9 23 * * *"
 
 jobs:
   automated-api-tests:
