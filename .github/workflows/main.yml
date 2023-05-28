@@ -1,6 +1,11 @@
 name: Automated API tests using Postman CLI
 
-on: workflow_dispatch
+on: 
+   workflow_dispatch:
+      inputs:
+         COLLECTION_ID:
+         description : Choose the ID of your collection
+         type: string
    
 jobs:
   automated-api-tests:
@@ -14,4 +19,4 @@ jobs:
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}   
       - name: Run API tests
         run: |
-          postman collection run "23838771-e3fcc213-7f4c-4708-a9eb-8d7e30909cfa"
+          postman collection run {{ github.event.inputs.COLLECTIO_ID }}
