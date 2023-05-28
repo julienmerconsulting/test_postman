@@ -33,7 +33,7 @@ jobs:
            $COLLECTION_ID = ${{ github.event.inputs.COLLECTION_ID }}
            $COLLECTION_FILE = "collections/${COLLECTION_ID}.json"
            Write-Host "Collection file: $COLLECTION_FILE"
-           postman collection run --collection $COLLECTION_FILE
+           postman collection run $COLLECTION_FILE
           }
           elseif ($env:GITHUB_EVENT_NAME -eq "push") {
             foreach ($file in Get-ChildItem collections/*.json) {
