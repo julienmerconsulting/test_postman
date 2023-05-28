@@ -9,6 +9,8 @@ on:
       COLLECTION_ID:
         description: "Choose the ID of your collection"
         type: string
+  schedule:
+      - cron: "9 23 * * *"
 
 jobs:
   automated-api-tests:
@@ -35,7 +37,7 @@ jobs:
            Write-Host "Collection file: $COLLECTION_FILE"
            postman collection run $COLLECTION_FILE
           }
-          elseif ($env:GITHUB_EVENT_NAME -eq "push") {
+          elseif ($env:GITHUB_EVENT_NAME -eq "push" || ${{ github.event_name }} == 'schedule') {
             foreach ($file in Get-ChildItem collections/*.json) {
               postman collection run $file
             }
