@@ -14,11 +14,10 @@ jobs:
   automated-api-tests:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Postman CLI
         run: |
-          iex ((New-Object System.Net.WebClient).DownloadString('https://dl-cli.pstmn.io/installer/windows64'))
-          $env:PATH += ";${env:USERPROFILE}\AppData\Local\Postman"
+          powershell.exe -NoProfile -InputFormat None -ExecutionPolicy AllSigned -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://dl-cli.pstmn.io/install/win64.ps1'))"
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
       - name: Get modified collection file
