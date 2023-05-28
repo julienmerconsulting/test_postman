@@ -24,10 +24,10 @@ jobs:
         run: |
           if ($env:GITHUB_EVENT_NAME -eq "workflow_dispatch") {
             foreach ($file in Get-ChildItem collections/*.json) {
-              postman collection run --collection $file
+              postman collection run $file
             }
           }
           elseif ($env:GITHUB_EVENT_NAME -eq "push") {
             $COLLECTION_ID = ${{ github.event.inputs.COLLECTION_ID }}
-            postman collection run --collection "collections/$COLLECTION_ID"
+            postman collection run "collections/$COLLECTION_ID"
           }
