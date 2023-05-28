@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "e3fcc213-7f4c-4708-a9eb-8d7e30909cfa",
+		"name": "xray",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23838771",
+		"_collection_link": "https://jmerconsulting.postman.co/workspace/New-Team-Workspace~6e4aaf60-f405-45a8-8814-b8bee77863fc/collection/23838771-e3fcc213-7f4c-4708-a9eb-8d7e30909cfa?action=share&creator=23838771&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "authentifier_xray",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"responseBody = pm.response.headers.get(\"x-access-token\");\r",
+							"console.log(responseBody)\r",
+							"pm.collectionVariables.set(\"Token_bearer\", responseBody);\r",
+							"console.log(responseBody);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"client_id\": \"27D8898BDC6A4C549B40DEF1454B7A9E\",\r\n    \"client_secret\": \"f8cd4961983972633ccdd60b038f0411764adbd39db854e6d57bd80e01cbe56b\" \r\n}"
+				},
+				"url": {
+					"raw": "https://xray.cloud.getxray.app/api/v2/authenticate",
+					"protocol": "https",
+					"host": [
+						"xray",
+						"cloud",
+						"getxray",
+						"app"
+					],
+					"path": [
+						"api",
+						"v2",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Récupérer_piece_jointe",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Le format de retour est octet/stream \",function(){\r",
+							"pm.response.to.have.header(\"Content-type\");\r",
+							"\r",
+							"console.log(pm.response)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token_bearer}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/octet-stream",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Length",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://xray.cloud.getxray.app/api/v2/attachments/624551c4-0e48-4f98-a082-e2d64fe4e734",
+					"protocol": "https",
+					"host": [
+						"xray",
+						"cloud",
+						"getxray",
+						"app"
+					],
+					"path": [
+						"api",
+						"v2",
+						"attachments",
+						"624551c4-0e48-4f98-a082-e2d64fe4e734"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Token_bearer",
+			"value": ""
+		}
+	]
+}
