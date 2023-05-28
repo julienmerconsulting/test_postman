@@ -20,12 +20,6 @@ jobs:
           powershell.exe -NoProfile -InputFormat None -ExecutionPolicy AllSigned -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://dl-cli.pstmn.io/install/win64.ps1'))"
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      - name: Get modified collection file
-        run: |
-          $COLLECTION_FILE = git diff --name-only --diff-filter=ACMRTUXB HEAD^ HEAD | Select-String "collections/" | Select-Object -Last 1 | ForEach-Object { $_.Line }
-          $COLLECTION_ID = Split-Path -Leaf $COLLECTION_FILE -Extension ".json"
-          Write-Host "Modified collection file: $COLLECTION_FILE"
-          Write-Host "Collection ID: $COLLECTION_ID"
       - name: Run API tests
         run: |
           if ($env:GITHUB_EVENT_NAME -eq "workflow_dispatch") {
@@ -34,5 +28,6 @@ jobs:
             }
           }
           elseif ($env:GITHUB_EVENT_NAME -eq "push") {
-            postman collection run --collection "collections\$COLLECTION_ID"
+            $COLLECTION_ID = ${{ github.event.inputs.COLLECTION_ID }}
+            postman collection run --collection "collections/$COLLECTION_ID"
           }
