@@ -20,6 +20,13 @@ jobs:
           powershell.exe -NoProfile -InputFormat None -ExecutionPolicy AllSigned -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://dl-cli.pstmn.io/install/win64.ps1'))"
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Get the name of the collection in parameter
+        id: collection
+        run: |
+          $COLLECTION_ID = ${{ github.event.inputs.COLLECTION_ID }}
+          $COLLECTION_FILE = "collections/${COLLECTION_ID}.json"
+          echo "::set-output name=collection_file::$COLLECTION_FILE"
+          echo "::set-output name=collection_id::$COLLECTION_ID"
       - name: Run API tests
         run: |
           if ($env:GITHUB_EVENT_NAME -eq "workflow_dispatch") {
