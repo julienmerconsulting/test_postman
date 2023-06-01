@@ -5,10 +5,10 @@ on:
     paths:
       - "collections/**"
   workflow_dispatch:
-    inputs:
-      COLLECTION_ID:
-        description: "Choose the ID of your collection"
-        type: string
+ #   inputs:
+ #     COLLECTION_ID:
+ #       description: "Choose the ID of your collection"
+ #       type: string
   schedule:
       - cron: "9 23 * * *"
 
