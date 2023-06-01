@@ -1,4 +1,4 @@
-name: Automated API tests using Postman CLI
+name: Automated API tests using Newman CLI
 
 on:
   push:
@@ -10,18 +10,15 @@ on:
         description: "Choose the ID of your collection"
         type: string
   schedule:
-      - cron: "9 23 * * *"
+    - cron: "9 23 * * *"
 
 jobs:
   automated-api-tests:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Postman CLI
-        run: |
-          powershell.exe -NoProfile -InputFormat None -ExecutionPolicy AllSigned -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://dl-cli.pstmn.io/install/win64.ps1'))"
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Install Newman CLI
+        run: npm install -g newman
       - name: Get the name of the collection in parameter
         id: collection
         run: |
@@ -35,11 +32,10 @@ jobs:
             $COLLECTION_FILE = "${{ steps.collection.outputs.collection_file }}"
             $COLLECTION_ID = "${{ steps.collection.outputs.collection_id }}"
             Write-Host "Collection file: $COLLECTION_FILE"
-            postman collection run $COLLECTION_FILE
+            newman run $COLLECTION_FILE
           }
           elseif ($env:GITHUB_EVENT_NAME -eq "push" || ${{ github.event_name }} == 'schedule') {
             foreach ($file in Get-ChildItem collections/*.json) {
-              postman collection run $file
+              newman run $file
             }
           }
-               
