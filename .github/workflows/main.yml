@@ -5,10 +5,10 @@ on:
     paths:
       - "collections/**"
   workflow_dispatch:
- #   inputs:
- #     COLLECTION_ID:
- #       description: "Choose the ID of your collection"
- #       type: string
+    inputs:
+      COLLECTION_ID:
+        description: "Choose the ID of your collection"
+        type: string
   schedule:
       - cron: "9 23 * * *"
 
@@ -32,17 +32,14 @@ jobs:
       - name: Run API tests
         run: |
           if ($env:GITHUB_EVENT_NAME -eq "workflow_dispatch") {
-            foreach ($file in Get-ChildItem collections/*.json) {
-              postman collection run $file
-            }  
+            $COLLECTION_FILE = "${{ steps.collection.outputs.collection_file }}"
+            $COLLECTION_ID = "${{ steps.collection.outputs.collection_id }}"
+            Write-Host "Collection file: $COLLECTION_FILE"
+            postman collection run $COLLECTION_FILE
           }
           elseif ($env:GITHUB_EVENT_NAME -eq "push" || ${{ github.event_name }} == 'schedule') {
             foreach ($file in Get-ChildItem collections/*.json) {
               postman collection run $file
             }
           }
-#  $COLLECTION_FILE = "${{ steps.collection.outputs.collection_file }}"
-        #   $COLLECTION_ID = "${{ steps.collection.outputs.collection_id }}"
-        #   Write-Host "Collection file: $COLLECTION_FILE"
-        #   postman collection run $COLLECTION_FILE
-       
+               
