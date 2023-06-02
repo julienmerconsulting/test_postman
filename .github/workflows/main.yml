@@ -32,10 +32,10 @@ jobs:
             $COLLECTION_FILE = "${{ steps.collection.outputs.collection_file }}"
             $COLLECTION_ID = "${{ steps.collection.outputs.collection_id }}"
             Write-Host "Collection file: $COLLECTION_FILE"
-            newman run $COLLECTION_FILE -htmlextra
+            newman run $COLLECTION_FILE -r htmlextra
           }
           elseif ($env:GITHUB_EVENT_NAME -eq "push" || ${{ github.event_name }} == 'schedule') {
             foreach ($file in Get-ChildItem collections/*.json) {
-              newman run $file -htmlextra
+              newman run $file -r htmlextra
             }
           }
