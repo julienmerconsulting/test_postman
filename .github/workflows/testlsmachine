@@ -1,0 +1,19 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install sshpass
+      run: sudo apt-get update && sudo apt-get install -y sshpass
+
+    - name: Execute remote command via SSH
+      env:
+        JM_PASSWORD: ${{ secrets.JM_PASSWORD }}
+      run: sshpass -p "$JM_PASSWORD" ssh -o StrictHostKeyChecking=no DELL@92.137.93.210 'ls'
