@@ -17,4 +17,4 @@ jobs:
     - name: Execute remote command via SSH
       env:
         JM_PASSWORD: ${{ secrets.JM_PASSWORD }}
-      run: sshpass -p "$JM_PASSWORD" ssh -o StrictHostKeyChecking=no DELL@92.137.93.210 'ls'
+      run: sshpass -p "$JM_PASSWORD" ssh -o StrictHostKeyChecking=no DELL@92.137.93.210 'dir'
